@@ -21,7 +21,7 @@ public class Console {
 
 
     public void play(Game game) {
-        System.out.print("Enter your name: ");
+        System.out.print("\uD83C\uDFAE Enter your name: ");
         String playerName = scanner.nextLine().trim();
         if (playerName.isEmpty()) {
             playerName = "Unknown";
@@ -41,9 +41,9 @@ public class Console {
         scoreService.addScore(score);
         if (game.isWon()) {
             show();
-            System.out.println("Congratulations! You won!");
+            System.out.println("\uD83C\uDF89 Congratulations! You won!");
         } else {
-            System.out.println("Game over! Try again.");
+            System.out.println("\uD83D\uDC80 Game over! Try again.");
         }
         askForRating(playerName);
         askForComment(playerName);
@@ -67,11 +67,12 @@ public class Console {
             }
             System.out.println();
         }
-        System.out.println("Score: " + game.getScore() + " | Game Rating: " + ratingService.getAverageRating("game1024"));
+        System.out.println("\uD83C\uDD99 Score: " + game.getScore() + "     ⭐  Game Rating: " + ratingService.getAverageRating("game1024"));
+        System.out.println("====================================================");
     }
 
     private void handleInput() {
-        System.out.print("Enter move (WASD for direction, Q to quit): ");
+        System.out.print("➡ Enter move (WASD for direction, Q to quit): ");
         String input = scanner.nextLine().toUpperCase();
 
         switch (input) {
@@ -88,16 +89,16 @@ public class Console {
                 game.move("RIGHT");
                 break;
             case "Q":
-                System.out.println("Exiting game...");
+                System.out.println("\uD83D\uDC4B Exiting game...");
                 System.exit(0);
                 break;
             default:
-                System.out.println("Invalid input! Use W, A, S, D or Q.");
+                System.out.println("⚠ Invalid input! Use W, A, S, D or Q.");
         }
     }
 
     private boolean askForRestart() {
-        System.out.print("Do you want to start a new game? (Y/N): ");
+        System.out.print("\uD83D\uDD04 Do you want to start a new game? (Y/N): ");
         String response = scanner.nextLine().toUpperCase();
         if (response.equals("Y")) {
             game.restart();
@@ -109,20 +110,21 @@ public class Console {
     private void printTopScores() {
         List<Score> scores = scoreService.getTopScores("game1024");
         int raiting = ratingService.getAverageRating("game1024");
+        System.out.println("\n==================================");
+        System.out.println("\uD83C\uDFC6 Top Scores for game1024 \uD83C\uDFC6| Average Rating: " + raiting);
         System.out.println("------------------------------------------------------------");
-        System.out.println("Top Scores for game1024 | Average Rating: " + raiting);
-        System.out.println("------------------------------------------------------------");
+
         for (int i = 0; i < scores.size(); i++) {
             Score score = scores.get(i);
             System.out.printf("%d. %s %d\n", i+1, score.getPlayer(), score.getPoints());
         }
-        System.out.println("------------------------------------------------------------");
+        System.out.println("====================================================");
     }
 
     private void printComments() {
         List<Comment> comments = commentService.getComments("game1024");
-        System.out.println("------------------------------------------------------------");
-        System.out.println("Recent Comments for game1024:");
+        System.out.println("\n====================================================");
+        System.out.println("\uD83D\uDCAC Recent Comments for game1024:\uD83D\uDCAC");
         System.out.println("------------------------------------------------------------");
         for (Comment comment : comments) {
             System.out.printf("%s: %s (%s)\n", comment.getPlayer(), comment.getComment(), comment.getCommentedOn());
