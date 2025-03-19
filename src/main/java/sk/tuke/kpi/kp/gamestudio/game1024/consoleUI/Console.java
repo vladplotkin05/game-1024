@@ -1,12 +1,11 @@
 package sk.tuke.kpi.kp.gamestudio.game1024.consoleUI;
+import sk.tuke.kpi.kp.gamestudio.entity.Comment;
+import sk.tuke.kpi.kp.gamestudio.entity.Rating;
 import sk.tuke.kpi.kp.gamestudio.entity.Score;
 import sk.tuke.kpi.kp.gamestudio.game1024.core.Board;
 import sk.tuke.kpi.kp.gamestudio.game1024.core.Game;
 import sk.tuke.kpi.kp.gamestudio.game1024.core.Tile;
-import sk.tuke.kpi.kp.gamestudio.service.RatingService;
-import sk.tuke.kpi.kp.gamestudio.service.ScoreService;
-import sk.tuke.kpi.kp.gamestudio.service.ScoreServiceJDBC;
-import sk.tuke.kpi.kp.gamestudio.service.RatingServiceJDBC;
+import sk.tuke.kpi.kp.gamestudio.service.*;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +17,8 @@ public class Console {
     private Scanner scanner = new Scanner(System.in);
     private ScoreService scoreService = new ScoreServiceJDBC();
     private RatingService ratingService = new RatingServiceJDBC();
+    private CommentService commentService = new CommentServiceJDBC();
+
 
     public void play(Game game) {
         System.out.print("Enter your name: ");
@@ -26,6 +27,7 @@ public class Console {
             playerName = "Unknown";
         }
         printTopScores();
+        printComments();
         this.game = game;
         game.startGame();
 
@@ -43,6 +45,8 @@ public class Console {
         } else {
             System.out.println("Game over! Try again.");
         }
+        askForRating(playerName);
+        askForComment(playerName);
         if (askForRestart()) {
             play(new Game(game.getBoard().getGrid().length));
         }
@@ -63,7 +67,7 @@ public class Console {
             }
             System.out.println();
         }
-        System.out.println("Score: " + game.getScore() + " | Game Rating: " + ratingService.getAverageRating("vadim"));
+        System.out.println("Score: " + game.getScore() + " | Game Rating: " + ratingService.getAverageRating("game1024"));
     }
 
     private void handleInput() {
@@ -113,6 +117,41 @@ public class Console {
             System.out.printf("%d. %s %d\n", i+1, score.getPlayer(), score.getPoints());
         }
         System.out.println("------------------------------------------------------------");
+    }
+
+    private void printComments() {
+        List<Comment> comments = commentService.getComments("game1024");
+        System.out.println("------------------------------------------------------------");
+        System.out.println("Recent Comments for game1024:");
+        System.out.println("------------------------------------------------------------");
+        for (Comment comment : comments) {
+            System.out.printf("%s: %s (%s)\n", comment.getPlayer(), comment.getComment(), comment.getCommentedOn());
+        }
+        System.out.println("------------------------------------------------------------");
+    }
+
+    private void askForRating(String playerName) {
+        System.out.print("Rate the game from 1 to 5: ");
+        try {
+            int rating = Integer.parseInt(scanner.nextLine());
+            if (rating >= 1 && rating <= 5) {
+                ratingService.setRating(new Rating(playerName, "game1024", rating, new Date()));
+                System.out.println("Thank you for rating!");
+            } else {
+                System.out.println("Invalid rating. Must be between 1 and 5.");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input. Rating not saved.");
+        }
+    }
+
+    private void askForComment(String playerName) {
+        System.out.print("Leave a comment about the game: ");
+        String commentText = scanner.nextLine().trim();
+        if (!commentText.isEmpty()) {
+            commentService.addComment(new Comment(playerName, "game1024", commentText, new Date()));
+            System.out.println("Thank you for your comment!");
+        }
     }
 }
 
