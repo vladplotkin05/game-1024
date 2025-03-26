@@ -9,7 +9,7 @@ public class RatingServiceJDBC implements RatingService {
     public static final String USER = "postgres";
     public static final String PASSWORD = "P10gle_Pwd";
 
-    public static final String INSERT_RATING = "INSERT INTO rating (player, game, rating, ratedOn) VALUES (?, ?, ?, ?)";
+    public static final String INSERT_RATING = "INSERT INTO rating (player, game, rating, ratedOn) VALUES (?, ?, ?, ?) ON CONFLICT (player, game) DO UPDATE SET rating = EXCLUDED.rating, rated_on = EXCLUDED.rated_on";
     public static final String SELECT_AVERAGE_RATING = "SELECT AVG(rating) FROM Rating";
     public static final String SELECT_PLAYER_RATING = "SELECT rating FROM rating WHERE game = ? AND player = ?";
     public static final String DELETE_RATING = "DELETE FROM rating";
