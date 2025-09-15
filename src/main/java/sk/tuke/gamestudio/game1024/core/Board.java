@@ -22,7 +22,7 @@ public class Board {
             }
         }
 
-        grid[0][0].setValue(1024);
+        //grid[0][0].setValue(1024);
 
         addRandomTile();
         addRandomTile();

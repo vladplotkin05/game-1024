@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class RatingTest {
     private static final String URL = "jdbc:postgresql://localhost/gamestudio";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "P10gle_Pwd";
+    private static final String PASSWORD = "12345";
 
     private RatingServiceJDBC ratingService;
 

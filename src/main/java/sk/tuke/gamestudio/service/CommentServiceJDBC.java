@@ -9,7 +9,7 @@ import java.util.List;
 public class CommentServiceJDBC implements CommentService {
     private static final String URL = "jdbc:postgresql://localhost/gamestudio";
     private static final String USER = "postgres";
-    private static final String PASSWORD = "P10gle_Pwd";
+    private static final String PASSWORD = "12345";
 
     private static final String INSERT = "INSERT INTO comment (player, game, comment, commentedOn) VALUES (?, ?, ?, ?)";
     private static final String SELECT = "SELECT player, game, comment, commentedOn FROM comment WHERE game = ? ORDER BY commentedOn DESC";

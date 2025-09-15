@@ -6,7 +6,7 @@ import java.sql.*;
 public class RatingServiceJDBC implements RatingService {
     public static final String URL = "jdbc:postgresql://localhost/gamestudio";
     public static final String USER = "postgres";
-    public static final String PASSWORD = "P10gle_Pwd";
+    public static final String PASSWORD = "12345";
 
     public static final String INSERT_RATING = "INSERT INTO rating (player, game, rating, ratedOn) VALUES (?, ?, ?, ?) ON CONFLICT (player, game) DO UPDATE SET rating = EXCLUDED.rating, ratedon = EXCLUDED.ratedon";
     public static final String SELECT_AVERAGE_RATING = "SELECT AVG(rating) FROM Rating";
